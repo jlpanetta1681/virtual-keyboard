@@ -27,6 +27,7 @@ const Keyboard = {
         this.elements.main.classList.add("keyboard", "1keyboard--hidden");        
         this.elements.keysContainer.classList.add("keyboard__keys");
         
+        this.elements.keysContainer.appendChild(this._createKeys())
         
         //add to DOM
         
@@ -46,11 +47,11 @@ const Keyboard = {
         ];
 
         //html for an icon
-        const createIconHTML = (icon_name) => {
+    const createIconHTML = (icon_name) => {
             return `<i class="material-icons">${icon_name}</i>`;
         };
 
-        keyLayout.forEach(key => {
+    keyLayout.forEach(key => {
             const keyElement = document.createElement("button");
             const insertLineBreak = ["backspace", "p", "enter", "?"].indexOf(key) !== -1;
 
@@ -117,7 +118,7 @@ const Keyboard = {
                             this._triggerEvent("onclose")
                          });
                 
-                     break;
+                    break;
 
                      default:
                         keyElement.textContent = key.toLowerCase();
@@ -127,10 +128,20 @@ const Keyboard = {
                             this.properties.value += this.properties.capslock ? key.toUpperCase() : key.toLowerCase();
                             this._triggerEvent("oninput")
                          });
-                
+                         
+                    break;
                 }
+
+                fragment.appendChild(keyElement);
+                
+                if (insertLineBreak) {
+                    fragment.appendChild(document.createElement("br"));
+                }
+
+            });
             
-        });
+            return fragment;
+            
     },
 
 
